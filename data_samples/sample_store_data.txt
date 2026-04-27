@@ -1,0 +1,162 @@
+================================
+SHOPMART - STORE POLICIES & FAQ
+================================
+
+Last Updated: January 2025
+
+---
+
+SHIPPING POLICY
+---------------
+
+Standard Shipping:
+- Orders are processed within 1-2 business days.
+- Standard delivery takes 5-7 business days within the continental US.
+- Standard shipping costs $5.99 for orders under $50.
+- FREE standard shipping on all orders over $50.
+
+Express Shipping:
+- Express shipping (2-3 business days) is available for $12.99.
+- Same-day delivery is available in select cities for $19.99.
+
+International Shipping:
+- We ship to over 30 countries worldwide.
+- International orders take 10-20 business days.
+- International shipping starts at $24.99 and varies by destination.
+- Customers are responsible for any customs or import duties.
+
+Order Tracking:
+- Once your order is shipped, you will receive a confirmation email with a tracking number.
+- You can track your order at shopmart.com/track or using the carrier's website.
+- Tracking information is typically available within 24 hours of shipment.
+
+---
+
+RETURN & REFUND POLICY
+-----------------------
+
+Return Window:
+- We accept returns within 30 days of the delivery date.
+- Items must be in their original condition, unworn, unwashed, and with all tags attached.
+- Final sale items (marked with a red tag) cannot be returned or exchanged.
+
+How to Return:
+1. Log in to your account and go to "Order History"
+2. Select the order and click "Request Return"
+3. Print the prepaid return shipping label (for US orders)
+4. Drop off your package at any UPS location within 7 days
+
+Refunds:
+- Once we receive your return, processing takes 3-5 business days.
+- Refunds are issued to the original payment method.
+- You will receive an email confirmation when your refund is processed.
+- Credit card refunds may take 5-10 additional business days to appear on your statement.
+
+Exchanges:
+- To exchange an item for a different size or color, please initiate a return and place a new order.
+- We do not process direct exchanges at this time.
+
+Damaged or Defective Items:
+- If you receive a damaged or defective item, contact us within 7 days at support@shopmart.com.
+- Include your order number and photos of the damage.
+- We will send a replacement at no cost or issue a full refund.
+
+---
+
+PAYMENT METHODS
+---------------
+
+We accept the following payment methods:
+- All major credit cards: Visa, Mastercard, American Express, Discover
+- PayPal and PayPal Credit
+- Apple Pay and Google Pay
+- Shop Pay (Buy Now, Pay Later in 4 installments — no interest)
+- Gift cards issued by ShopMart
+
+Payment Security:
+- All transactions are encrypted using SSL technology.
+- We never store your full credit card number.
+- Payments are processed through Stripe, a PCI-DSS compliant platform.
+
+---
+
+PRODUCTS & INVENTORY
+--------------------
+
+Product Categories:
+- Electronics: Smartphones, tablets, laptops, headphones, smartwatches
+- Clothing: Men's, women's, and kids' apparel for all seasons
+- Home & Kitchen: Cookware, appliances, bedding, storage solutions
+- Sports & Outdoors: Fitness equipment, camping gear, bicycles
+- Beauty & Personal Care: Skincare, haircare, fragrances
+
+Product Condition:
+- All products sold by ShopMart are brand new unless explicitly labeled "Refurbished."
+- Refurbished products are inspected, tested, and come with a 90-day warranty.
+- We source directly from authorized manufacturers and distributors.
+
+Product Availability:
+- Out-of-stock items can be added to your wishlist for restock alerts.
+- Restock times vary by product — typically 1-4 weeks.
+- Some items are seasonal and may not be restocked.
+
+---
+
+CUSTOMER ACCOUNTS
+-----------------
+
+Creating an Account:
+- You can shop as a guest or create a free account.
+- Creating an account lets you track orders, save addresses, and view order history.
+
+ShopMart Rewards Program:
+- Earn 1 point for every $1 spent.
+- Redeem 100 points for $1 off your next order.
+- Silver status (500+ points/year): 10% discount on all purchases.
+- Gold status (2000+ points/year): 15% discount + free express shipping.
+
+---
+
+CUSTOMER SUPPORT
+----------------
+
+Contact Us:
+- Email: support@shopmart.com (response within 24 hours)
+- Live Chat: Available Mon-Fri, 9am-6pm EST at shopmart.com
+- Phone: 1-800-SHOPMART (1-800-746-7627), Mon-Fri 9am-5pm EST
+
+Common Issues We Help With:
+- Order status and tracking
+- Returns and refunds
+- Product questions and recommendations
+- Account issues and password resets
+- Price adjustments (within 14 days of purchase if price drops)
+
+---
+
+FREQUENTLY ASKED QUESTIONS
+---------------------------
+
+Q: Can I change or cancel my order?
+A: Orders can be modified or cancelled within 1 hour of placement. After that, the order enters processing and cannot be changed. Please contact support immediately if you need to cancel.
+
+Q: Do you offer gift wrapping?
+A: Yes! Gift wrapping is available for $4.99 per item during checkout. You can also include a personalized gift message at no extra cost.
+
+Q: What is your price match policy?
+A: We will match any competitor's current price on identical in-stock items. Submit a price match request via email with a link to the competitor's listing. Price matching does not apply to auction sites, clearance items, or marketplace sellers.
+
+Q: How do I use a promo code?
+A: Enter your promo code in the "Discount Code" field during checkout. Only one promo code can be used per order. Promo codes cannot be combined with other offers.
+
+Q: Do you have a loyalty program?
+A: Yes, our ShopMart Rewards program lets you earn points on every purchase. Sign up for free in your account settings.
+
+Q: What if my package is lost or stolen?
+A: If your tracking shows "Delivered" but you haven't received the package, wait 24 hours and check with neighbors. If still missing, contact us within 7 days and we will file a claim with the carrier and send a replacement or refund.
+
+Q: Can I return a gift?
+A: Yes. Gift recipients can return items for store credit without needing the original receipt. Contact support with the order number or the gift giver's email address.
+
+Q: Is my personal information safe?
+A: Yes. We never sell your personal data. Please read our Privacy Policy at shopmart.com/privacy for full details.

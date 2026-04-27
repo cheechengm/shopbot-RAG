@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShopBot — AI Store Assistant</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">🛍️</span>
+        <span class="logo-text">ShopBot</span>
+      </div>
+      <p class="logo-sub">AI-Powered Store Assistant</p>
+    </div>
+
+    {% if role == 'admin' %}
+    <div class="sidebar-section">
+      <h3 class="section-title">Knowledge Base</h3>
+
+      <div class="upload-area" id="upload-area">
+        <input type="file" id="file-input" accept=".pdf,.txt,.docx" hidden />
+        <div class="upload-prompt" onclick="document.getElementById('file-input').click()">
+          <span class="upload-icon">📄</span>
+          <p>Upload PDF, DOCX, or TXT</p>
+          <span class="upload-hint">Click or drag & drop</span>
+        </div>
+      </div>
+
+      <div id="upload-status" class="upload-status hidden"></div>
+
+      <button class="btn-secondary" id="load-sample-btn">
+        ✨ Load Sample Store Data
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <h3 class="section-title">Loaded Documents</h3>
+      <div id="doc-list" class="doc-list">
+        <p class="empty-hint">No documents loaded yet</p>
+      </div>
+      <button class="btn-danger" id="clear-btn">🗑 Clear All</button>
+    </div>
+    {% else %}
+    <div class="sidebar-section">
+      <p class="empty-hint">Welcome! Ask me anything about our products or store policies.</p>
+    </div>
+    {% endif %}
+    <div class="sidebar-footer">
+      <p>Built with Ollama + ChromaDB</p>
+      <p>Logged in as: <strong>{{ role.capitalize() }}</strong></p>
+    </div>
+  </aside>
+
+  <main class="chat-panel">
+    <header class="chat-header">
+      <div class="header-info">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">Ready to answer questions</span>
+      </div>
+      <button class="btn-icon" id="clear-chat-btn" title="Clear chat">🔄</button>
+    </header>
+
+    <div class="messages" id="messages">
+      <div class="message bot-message welcome-message">
+        <div class="avatar">🤖</div>
+        <div class="bubble">
+          <p>Hi! I'm <strong>ShopBot</strong>, your AI store assistant. 👋</p>
+          <p>I can answer questions about your products, shipping, returns, and policies.</p>
+          
+          {% if role == 'admin' %}
+          <p>➡️ Start by uploading a PDF or clicking <strong>"Load Sample Store Data"</strong> on the left.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <div class="suggested-questions" id="suggestions">
+        <span class="suggestion-label">Try asking:</span>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">What's your return policy?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">How long does shipping take?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">Do you offer free shipping?</button>
+        <button class="suggestion-chip" onclick="sendSuggestion(this)">How do I track my order?</button>
+      </div>
+
+      <div class="input-row">
+        <textarea
+          id="user-input"
+          placeholder="Ask about products, shipping, returns..."
+          rows="1"
+          maxlength="500"
+        ></textarea>
+        <button id="send-btn" onclick="sendMessage()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="/static/js/chat.js"></script>
+</body>
+</html>
