@@ -16,11 +16,90 @@ Customer Question
   RAG Engine (rag_engine.py)
   ┌────────────────────────────────┐
   │  1. Embed question             │
-  │  2. Retrieve top-k passages    │◄── ChromaDB Vector Store
-  │     from vector store          │
-  │  3. Build context prompt       │
-  │  4. Generate answer via Claude │
-  └────────────────────────────────┘
+  Here is the raw Markdown code for your updated README.md. You can copy and paste this directly into your file:
+
+Markdown
+# 🛍️ ShopBot — E-commerce RAG Chatbot
+
+An AI-powered customer support chatbot that answers questions based on **your own store documents**. This project features a hybrid architecture using a local LLM for cost-efficiency and **MongoDB Atlas Vector Search** for cloud-based persistence.
+
+---
+
+## 🏗️ Architecture
+
+Customer Question                 🔒 Private Admin Link
+│                             │
+▼                             ▼
+Flask API (app.py) ◄────────────────────── Document Uploads
+│
+▼
+RAG Engine (rag_engine.py)
+┌────────────────────────────────┐
+│  1. Embed question (Ollama)    │
+│  2. Vector Search (Cloud)      │◄── ☁️ MongoDB Atlas (Cloud DB)
+│  3. Contextual Reranking       │
+│  4. Generate Answer (Llama 3)  │
+└────────────────────────────────┘
+│
+▼
+Answer + Source Citations
+
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. MongoDB Atlas Setup (Cloud Database)
+1. Create a free cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. Create a **Vector Search Index** on your collection named `default`.
+3. Use the following JSON configuration for the index:
+```json
+{
+  "fields": [{
+    "numDimensions": 4096,
+    "path": "embedding",
+    "similarity": "cosine",
+    "type": "vector"
+  }]
+}
+2. Local LLM (Ollama)
+Download Ollama and pull the model:
+
+Bash
+ollama pull llama3
+ollama serve
+3. Project Configuration
+Create a .env file in the root directory and add your connection string:
+
+Bash
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/shopbot_db
+4. Install & Run
+Bash
+# Create and activate virtual environment
+python -m venv venv
+venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start the application
+python app.py
+🚀 Role-Based Access (Stealth Mode)
+This app separates the Customer and Admin interfaces without requiring a complex login database:
+
+Customer View: http://localhost:5000
+
+Standard chat interface.
+
+Upload buttons and document lists are hidden via Jinja2 conditional rendering.
+
+Admin View: http://localhost:5000/manage-shop-admin-99
+
+Reveals the Knowledge Base management sidebar.
+
+Allows the owner to upload PDFs/Docs and clear the cloud database.
+
+API endpoints are protected via request.referrer validation.
        │
        ▼
   Answer + Source Citations
