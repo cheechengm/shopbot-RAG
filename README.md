@@ -4,7 +4,7 @@
 
 ---
 
-## 📝 Resume Summary (TL;DR)
+## 📝 Resume Summary 
 > **AI-Powered E-commerce Chatbot (RAG System)**
 > Engineered a full-stack RAG platform that enables businesses to deploy domain-specific AI assistants. Built a document processing pipeline to vectorize unstructured data (PDF/DOCX) into MongoDB Atlas, ensuring grounded and accurate LLM responses. Implemented secure role-based interfaces using **Jinja2** to isolate administrative document management from public customer chat.
 >
