@@ -38,11 +38,11 @@
 * **Multi-Format Support:** Ingests unstructured data from PDF, Word, and Text files seamlessly.
 * **Admin Dashboard:** A dedicated interface for shop owners to manage their knowledge base and clear existing data.
 
-## image of the interface for admin dashboard
+## Image of the interface for admin dashboard
 <img width="2869" height="1474" alt="image" src="https://github.com/user-attachments/assets/35464491-c6f6-48c7-a02d-9d642bd9dc8c" />
 
 
-## image of the customer interface 
+## Image of the customer interface 
 <img width="2859" height="1424" alt="image" src="https://github.com/user-attachments/assets/275a5df6-c1b0-4e12-94fe-072bf9e9cc5b" />
 
 
