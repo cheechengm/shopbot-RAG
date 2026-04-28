@@ -40,6 +40,7 @@
 
 ## Image of the interface for admin dashboard
 <img width="2869" height="1474" alt="image" src="https://github.com/user-attachments/assets/35464491-c6f6-48c7-a02d-9d642bd9dc8c" />
+The image demonstrates the ingestion of a Shopee Refund and Return Policy PDF. Once vectorized and stored in MongoDB Atlas Vector Search, this persistent data allows the AI to generate highly accurate responses with direct citations from the source documentation.
 
 
 ## Image of the customer interface 
