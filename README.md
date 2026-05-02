@@ -1,193 +1,70 @@
 # 🛍️ ShopBot — E-commerce RAG Chatbot
 
-An AI-powered customer support chatbot that answers questions based on **your own store documents** (PDFs, Word docs, text files). Built with Python, Flask, LangChain-style RAG pipeline, ChromaDB, and the Claude API.
+**Problem Statement:** Customers often encounter obstacles—such as questions about refund policies or shipping times—outside of standard business hours. Without a human agent available, these users are left without guidance, resulting in a poor user experience. This AI Chatbot addresses this by providing a persistent, 24/7 knowledge expert that delivers instant, documentation-backed support.
+
+**ShopBot** is a Retrieval-Augmented Generation (RAG) platform that transforms static store documents into an interactive AI support agent. It enables store owners to upload policies and FAQs, providing customers with instant, accurate responses grounded strictly in the shop’s verified data.
 
 ---
 
-## 🏗️ Architecture
-
-```
-Customer Question
-       │
-       ▼
-  Flask API (app.py)
-       │
-       ▼
-  RAG Engine (rag_engine.py)
-  ┌────────────────────────────────┐
-  │  1. Embed question             │
-  │  2. Vector Search (Cloud)      │◄── ☁️ MongoDB Atlas (Cloud DB)
-  │  3. Contextual Reranking       │
-  │  4. Generate Answer (Llama 3)  │
-  └────────────────────────────────┘
-       │
-       ▼
-  Answer + Source Citations
-```
-
-**Data Ingestion (one-time per document):**
-```
-PDF / DOCX / TXT
-      │
-  Text Extraction (PyPDF2 / python-docx)
-      │
-  Chunking (500 chars, 80 overlap)
-      │
-  Stored in ChromaDB
-```
-
----
-
-## ⚙️ Setup Instructions (100% Free)
-
-### 1. Install Ollama (the free local LLM runner)
-Download from https://ollama.com and install it.
-
-Then pull the Llama 3 model (one-time download, ~4.7GB):
-```bash
-ollama pull llama3
-```
-
-Start Ollama (it runs in the background):
-```bash
-ollama serve
-```
-
-### 2. Clone & navigate to project
-```bash
-git clone <your-repo-url>
-cd rag-chatbot
-```
-
-### 3. Create a virtual environment
-```bash
-python -m venv venv
-source venv/bin/activate        # Mac/Linux
-venv\Scripts\activate           # Windows
-```
-
-### 4. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 5. Run the app
-```bash
-python app.py
-```
-
-Open your browser at **http://localhost:5000** — no API key needed! 🎉
-
-### Optional: Use a different model
-```bash
-# Smaller/faster (good for low-RAM machines)
-ollama pull llama3:8b
-OLLAMA_MODEL=llama3:8b python app.py
-
-# More powerful
-ollama pull mistral
-OLLAMA_MODEL=mistral python app.py
-```
-
----
-
-## 🚀 How to Use
-
-1. **Load sample data** — click "Load Sample Store Data" to see it work instantly
-2. **Upload your own documents** — drag & drop PDFs, Word docs, or text files
-3. **Ask questions** — type natural language questions about your products, policies, etc.
-
----
-
-## 📁 Project Structure
-
-```
-rag-chatbot/
-├── app.py                      # Flask API routes
-├── rag_engine.py               # Core RAG pipeline
-├── requirements.txt
-├── data_samples/
-│   └── sample_store_data.txt   # Demo store FAQ data
-├── uploads/                    # Uploaded files (auto-created)
-├── vectorstore/                # ChromaDB persisted storage
-├── templates/
-│   └── index.html              # Chat UI
-└── static/
-    ├── css/style.css
-    └── js/chat.js
-```
-
----
-
-## 🔧 Customization
-
-### Change the chatbot persona
-Edit the `system_prompt` in `rag_engine.py` → `_generate_answer()`:
-```python
-system_prompt = """You are a helpful assistant for [YOUR STORE NAME]..."""
-```
-
-### Adjust chunk size
-In `rag_engine.py`:
-```python
-CHUNK_SIZE = 500    # increase for longer passages
-CHUNK_OVERLAP = 80  # increase for more context continuity
-TOP_K = 4           # number of passages to retrieve
-```
-
-### Use a different LLM
-Replace the Anthropic client in `rag_engine.py` with OpenAI:
-```python
-from openai import OpenAI
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-response = client.chat.completions.create(model="gpt-4o", messages=messages)
-answer = response.choices[0].message.content
-```
-
----
-
-## 🌐 Deployment (Free)
-
-### Deploy to Render.com
-1. Push code to GitHub
-2. Create new **Web Service** on render.com
-3. Set environment variable: `ANTHROPIC_API_KEY`
-4. Build command: `pip install -r requirements.txt`
-5. Start command: `gunicorn app:app`
-
-### Deploy to Railway
-```bash
-railway login
-railway new
-railway up
-railway variables set ANTHROPIC_API_KEY=your-key
-```
-
----
-
-## 📝 Resume Description
-
+## 📝 Resume Summary 
 > **AI-Powered E-commerce Chatbot (RAG System)**
-> Built a production-style retrieval-augmented generation (RAG) chatbot using Python, Flask, and the Anthropic Claude API. The system ingests PDF and Word documents, chunks and stores text as embeddings in ChromaDB, and retrieves semantically relevant passages to ground LLM responses. Implemented real-time chat UI with conversation memory, source citations, and document management. Deployed to cloud with persistent vector storage.
+> Engineered a full-stack RAG platform that enables businesses to deploy domain-specific AI assistants. Built a document processing pipeline to vectorize unstructured data (PDF/DOCX) into MongoDB Atlas, ensuring grounded and accurate LLM responses. Implemented secure role-based interfaces using **Jinja2** to isolate administrative document management from public customer chat.
 >
-> **Tech:** Python · Flask · ChromaDB · Anthropic Claude API · RAG · NLP · REST API · HTML/CSS/JS
+> **Core Tech:** Python, Flask, Llama 3, MongoDB Atlas, RAG, Semantic Search.
+
+---
+
+## 🏗️ Technical Highlights
+
+* **RAG Architecture:** Developed a retrieval-augmented generation flow using **Llama 3** to ground AI responses in uploaded store documents, ensuring high factual accuracy and minimizing hallucinations.
+* **Vector Search & Persistence:** Integrated **MongoDB Atlas Vector Search** to store and retrieve document embeddings, enabling millisecond-latency semantic search across private datasets.
+* **Secure Role Separation:** Leveraged **Jinja2** conditional rendering to create a secure, "stealth-mode" admin dashboard for document management, allowing for administrative control without a complex authentication database.
+* **Automated Ingestion:** Built a robust data pipeline that chunks and vectorizes PDFs, DOCX, and TXT files using a sliding-window strategy to preserve semantic context.
 
 ---
 
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
-|---|---|
-| Backend | Python 3.10+, Flask |
-| LLM | Ollama + Llama 3 (free, runs locally) |
-| Vector Store | ChromaDB (local persistent) |
-| PDF Parsing | PyPDF2 |
-| DOCX Parsing | python-docx |
-| Frontend | HTML5, CSS3, Vanilla JavaScript |
-| Deployment | Render / Railway |
+| :--- | :--- |
+| **Backend** | Python (Flask), REST APIs |
+| **AI / ML** | Llama 3 (Ollama), Semantic Search, RAG |
+| **Database** | MongoDB Atlas Vector Search, ChromaDB |
+| **Frontend** | Jinja2, Vanilla JavaScript, CSS3 |
 
 ---
 
-## 📄 License
+## 📁 Key Features
 
-MIT — free to use for personal and commercial projects.
+* **Verified Responses:** Every answer is derived from the uploaded shop documentation, ensuring customers receive accurate information.
+* **Multi-Format Support:** Ingests unstructured data from PDF, Word, and Text files seamlessly.
+* **Admin Dashboard:** A dedicated interface for shop owners to manage their knowledge base and clear existing data. (Normal customer will not be able to see)
+* **Real-Time Processing Progress:** A dynamic loading bar that provides instant feedback during document ingestion, showing the exact percentage of chunks processed and embedded.
+* **Smart Semantic Search:** Powered by MongoDB Atlas Vector Search and Ollama, the bot understands the meaning behind customer questions rather than just matching keywords.
+* **Persistent Memory:** Documentation remains securely stored in the cloud (MongoDB Atlas), meaning the bot is ready to answer questions 24/7 without needing to re-upload files after a restart.
+* **Clutter-Free Chat Session:** Users can reset their conversation at any time with a "Clear Chat" feature, instantly wiping the history to start a fresh session and maintain an organized interface.
+
+## Image of the interface for admin dashboard
+<img width="2859" height="1452" alt="image" src="https://github.com/user-attachments/assets/8e721ff5-ffcf-4c65-b8a0-68eef47add36" />
+
+The image demonstrates the ingestion of a Shopee Refund and Return Policy PDF. Once vectorized and stored in MongoDB Atlas Vector Search, this persistent data(MongoDB) allows the AI to generate highly accurate responses with direct citations from the source documentation. When ingesting the document it also includes a progress bar so admin can keep track of the progress.
+
+
+## Image of the customer interface 
+<img width="2877" height="1461" alt="image" src="https://github.com/user-attachments/assets/80ec7d95-ee3e-490a-a38f-44107d816154" />
+The image above shows the client conversing with the ai chatbot regarding return policy.
+
+
+## ⚙️ How the Ingestion Pipeline Works
+The process converts static documents into "searchable brains" for the AI through several coordinated steps:
+
+**Document Parsing:** The system extracts raw text from PDF, DOCX, or TXT files, handling complex layouts like the Shopee policy you ingested.
+
+**Recursive Chunking:** To stay within the AI's "context window," the text is broken into smaller, overlapping passages (chunks).
+
+**Vector Embedding:** Each chunk is sent to Ollama (Llama 3), which converts human language into a high-dimensional mathematical vector representing its meaning.
+
+**Persistent Storage:** These vectors are saved in MongoDB Atlas. Unlike a standard database, this allows for "nearest neighbor" searches, finding content based on intent rather than just keywords.
+
+**Live Feedback:** During this loop, the system sends real-time updates to the Admin Progress Bar, ensuring the user knows exactly how much data has been successfully vectorized.
+
