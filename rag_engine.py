@@ -112,14 +112,14 @@ class MongoVectorStore:
             "embedding": embedding
         })
 
-    def search(self, query, top_k=4):
+    def search(self, query: str, top_k: int = 4) -> List[Dict]:
         query_vector = self._get_embedding(query)
+        print(f"DEBUG: Generated embedding of length {len(query_vector)}") 
         
-        # This matches the "default" index name you created in the screenshot
         pipeline = [
             {
                 "$vectorSearch": {
-                    "index": "default", 
+                    "index": "vector_index", 
                     "path": "embedding",
                     "queryVector": query_vector,
                     "numCandidates": 100,
@@ -129,13 +129,16 @@ class MongoVectorStore:
             {
                 "$project": {
                     "text": 1,
+                    "metadata": 1, # Ensure metadata is included!
                     "score": {"$meta": "vectorSearchScore"}
                 }
             }
         ]
         
         results = list(self.collection.aggregate(pipeline))
-        return [(doc["text"], doc.get("score", 0)) for doc in results]
+        # Return the full document (as a dict) so the engine can read metadata
+        print(f"DEBUG: Raw search results from Mongo: {results}") # IS THIS EMPTY?
+        return results
 
     def list_sources(self) -> List[str]:
         """Fetches unique filenames from the cloud so the sidebar stays populated."""
@@ -162,57 +165,69 @@ class RAGEngine:
 
     def __init__(self):
         # Use ChromaDB if available, else fall back to simple store
-        if CHROMA_AVAILABLE:
-            self.store = MongoVectorStore()     # <-- Use this
-            print("✅ Using ChromaDB vector store")
-        else:
-            self.store = SimpleVectorStore()
-            print("⚠️  ChromaDB not found — using in-memory keyword search")
-
+        self.store = MongoVectorStore()     # <-- Use this
+        print("✅ Connected to MongoDB Atlas Vector Store")
         self.ingested_files: List[str] = []
         self._check_ollama()
 
     # ── Document ingestion ──────────────────────────────────────
 
-    def ingest_document(self, filepath: str, display_name: str) -> int:
+    def ingest_document(self, filepath: str, display_name: str, progress_tracker: dict = None) -> int:
         print(f"\n--- STARTING INGESTION for: {display_name} ---")
 
-        # NEW: Check if this file is already in MongoDB
+        # Check if this file is already in MongoDB
         existing_count = self.store.collection.count_documents({"metadata.source": display_name})
         if existing_count > 0:
             print(f"✅ {display_name} already exists in Atlas ({existing_count} chunks). Skipping re-upload.")
+            if progress_tracker is not None:
+                progress_tracker["progress"] = 100
+                progress_tracker["status"] = "File already exists. Ready!"
             return existing_count
 
-       # new file
         # STEP 1: Extraction
         text = self._extract_text(filepath)
-        print(f"DEBUG 1: Extracted {len(text)} total characters.")
         if len(text) == 0:
-            print("❌ ERROR: No text was extracted! Check file content or path.")
+            print("❌ ERROR: No text was extracted!")
+            if progress_tracker: progress_tracker["status"] = "Error: No text found"
             return 0
 
         # STEP 2: Chunking
         chunks = self._chunk_text(text)
-        print(f"DEBUG 2: Created {len(chunks)} chunks.")
-        if len(chunks) == 0:
-            print("❌ ERROR: 0 chunks created. Is your sample text too short? (Need > 40 chars)")
+        total_chunks = len(chunks)
+        if total_chunks == 0:
+            print("❌ ERROR: 0 chunks created.")
             return 0
 
         # STEP 3: Adding to Store
-        print(f"DEBUG 3: Adding chunks to {type(self.store).__name__}...")
+        print(f"DEBUG 3: Processing {total_chunks} chunks...")
         try:
             for i, chunk in enumerate(chunks):
-              self.store.add(chunk, {"source": display_name, "chunk_index": i})
-            print("DEBUG 4: Loop finished without crashing.")
+                # Calculate percentage
+                percent = int(((i + 1) / total_chunks) * 100)
+                
+                # Update progress tracker for the frontend
+                if progress_tracker is not None:
+                    progress_tracker["progress"] = percent
+                    progress_tracker["status"] = f"Embedding chunk {i+1} of {total_chunks}..."
+
+                # Console log every 10 chunks
+                if i % 10 == 0:
+                    print(f"Progress: {i}/{total_chunks} chunks processed...")
+
+                # The actual heavy lifting (Ollama embedding + Mongo upload)
+                self.store.add(chunk, {"source": display_name, "chunk_index": i})
+                
+            print("DEBUG 4: Loop finished successfully.")
         except Exception as e:
             print(f"❌ ERROR during store.add: {str(e)}")
+            if progress_tracker: progress_tracker["status"] = "Error during embedding"
+            raise e
 
         # STEP 4: Final Verification
         final_count = self.store.count()
         print(f"DEBUG 5: Final Verification - Store now says it has {final_count} chunks.")
-        print("--- INGESTION COMPLETE ---\n")
-
-        return len(chunks)
+        
+        return total_chunks
     def _extract_text(self, filepath: str) -> str:
         ext = filepath.rsplit(".", 1)[-1].lower()
 

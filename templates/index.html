@@ -5,6 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ShopBot — AI Store Assistant</title>
   <link rel="stylesheet" href="/static/css/style.css" />
+  <style>
+    /* Internal style for the progress bar logic */
+    .progress-wrapper {
+      width: 100%;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      margin-top: 8px;
+      overflow: hidden;
+      display: none; /* Hidden until upload starts */
+    }
+    #progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #4CAF50;
+      transition: width 0.3s ease;
+    }
+    .upload-status.loading .progress-wrapper {
+      display: block;
+    }
+  </style>
 </head>
 <body>
 
@@ -32,7 +53,13 @@
         </div>
       </div>
 
-      <div id="upload-status" class="upload-status hidden"></div>
+      <!-- UPDATED STATUS AREA -->
+      <div id="upload-status" class="upload-status hidden">
+        <div id="status-text-content"></div>
+        <div class="progress-wrapper">
+          <div id="progress-bar-fill"></div>
+        </div>
+      </div>
 
       <button class="btn-secondary" id="load-sample-btn">
         ✨ Load Sample Store Data
@@ -51,8 +78,9 @@
       <p class="empty-hint">Welcome! Ask me anything about our products or store policies.</p>
     </div>
     {% endif %}
+    
     <div class="sidebar-footer">
-      <p>Built with Ollama + ChromaDB</p>
+      <p>Built with Ollama + MongoDB</p>
       <p>Logged in as: <strong>{{ role.capitalize() }}</strong></p>
     </div>
   </aside>

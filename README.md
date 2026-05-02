@@ -16,10 +16,9 @@ Customer Question
   RAG Engine (rag_engine.py)
   ┌────────────────────────────────┐
   │  1. Embed question             │
-  │  2. Retrieve top-k passages    │◄── ChromaDB Vector Store
-  │     from vector store          │
-  │  3. Build context prompt       │
-  │  4. Generate answer via Claude │
+  │  2. Vector Search (Cloud)      │◄── ☁️ MongoDB Atlas (Cloud DB)
+  │  3. Contextual Reranking       │
+  │  4. Generate Answer (Llama 3)  │
   └────────────────────────────────┘
        │
        ▼

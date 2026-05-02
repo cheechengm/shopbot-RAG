@@ -3,10 +3,14 @@ import json
 from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 from rag_engine import RAGEngine
+import time
+from flask import Response
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = "uploads"
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16MB max upload
+# A simple global dictionary to track progress of different files
+processing_status = {"progress": 0, "status": "Idle"}
 
 ALLOWED_EXTENSIONS = {"pdf", "txt", "docx"}
 
@@ -26,12 +30,27 @@ def index():
 def admin_panel():
     return render_template("index.html", role="admin")
 
+@app.route("/progress")
+def progress():
+    def generate():
+        while True:
+            # Yield the current progress as a Server-Sent Event
+            json_data = json.dumps(processing_status)
+            yield f"data: {json_data}\n\n"
+            if processing_status["progress"] >= 100 or processing_status["status"] == "Error":
+                break
+            time.sleep(0.5)
+    return Response(generate(), mimetype="text/event-stream")
+
 @app.route("/upload", methods=["POST"])
 def upload_file():
-    # Only allow uploads if they come from your secret URL
-    if "manage-shop-admin-99" not in request.referrer:
+    global processing_status
+    
+    # 1. Security Check
+    if not request.referrer or "manage-shop-admin-99" not in request.referrer:
         return jsonify({"error": "Unauthorized"}), 403
 
+    # 2. File Validation
     if "file" not in request.files:
         return jsonify({"error": "No file provided"}), 400
 
@@ -42,21 +61,37 @@ def upload_file():
     if not allowed_file(file.filename):
         return jsonify({"error": "File type not allowed. Use PDF, TXT, or DOCX."}), 400
 
+    # 3. Reset Progress Tracker
+    processing_status["progress"] = 0
+    processing_status["status"] = f"Saving {file.filename}..."
+
     filename = secure_filename(file.filename)
     filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
     file.save(filepath)
 
+    # 4. Processing / Ingestion
     try:
-        chunk_count = rag.ingest_document(filepath, filename)
+        processing_status["status"] = "Extracting text and chunking..."
+        
+        # We pass processing_status so rag.ingest_document can update 
+        # processing_status["progress"] inside its internal loop
+        chunk_count = rag.ingest_document(filepath, filename, progress_tracker=processing_status)
+        
+        # 5. Finalize
+        processing_status["progress"] = 100
+        processing_status["status"] = "Complete!"
+        
         return jsonify({
             "success": True,
             "message": f"✅ '{filename}' ingested successfully — {chunk_count} passages indexed.",
             "filename": filename
         })
+
     except Exception as e:
+        print(f"Error during upload: {e}")
+        processing_status["status"] = "Error during processing"
+        processing_status["progress"] = 0
         return jsonify({"error": f"Failed to process file: {str(e)}"}), 500
-
-
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json()

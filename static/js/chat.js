@@ -144,7 +144,23 @@ fileInput.addEventListener("change", (e) => {
 });
 
 async function uploadFile(file) {
-  showUploadStatus("loading", `⏳ Processing '${file.name}'...`);
+  // 1. Setup the UI for loading
+  showUploadStatus("loading", `⏳ Initializing '${file.name}'...`);
+  
+  // 2. Start listening for progress updates
+  const eventSource = new EventSource("/progress");
+  
+  eventSource.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    
+    // Update the status text with the chunk info (e.g., "Embedding chunk 10 of 76...")
+    showUploadStatus("loading", `⏳ [${data.progress}%] ${data.status}`);
+    
+    // If the backend says 100%, close the listener
+    if (data.progress >= 100) {
+      eventSource.close();
+    }
+  };
 
   const formData = new FormData();
   formData.append("file", file);
@@ -152,6 +168,8 @@ async function uploadFile(file) {
   try {
     const res = await fetch("/upload", { method: "POST", body: formData });
     const data = await res.json();
+
+    eventSource.close(); // Safety close
 
     if (data.error) {
       showUploadStatus("error", `❌ ${data.error}`);
@@ -161,26 +179,37 @@ async function uploadFile(file) {
       appendMessage("bot", `📄 I've loaded **${file.name}**. You can now ask me questions about it!`);
     }
   } catch (err) {
+    eventSource.close();
     showUploadStatus("error", "❌ Upload failed. Server error.");
   }
 
   fileInput.value = "";
 }
-
 // ── Sample Data ─────────────────────────────────────
 document.getElementById("load-sample-btn").addEventListener("click", async () => {
-  showUploadStatus("loading", "⏳ Loading sample store data...");
+  showUploadStatus("loading", "⏳ Initializing sample data...");
+  
+  const eventSource = new EventSource("/progress");
+  eventSource.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+    showUploadStatus("loading", `⏳ [${data.progress}%] ${data.status}`);
+    if (data.progress >= 100) eventSource.close();
+  };
+
   try {
     const res = await fetch("/load-sample", { method: "POST" });
     const data = await res.json();
+    eventSource.close();
+
     if (data.error) {
       showUploadStatus("error", `❌ ${data.error}`);
     } else {
       showUploadStatus("success", data.message);
       loadDocumentList();
-      appendMessage("bot", "📦 I've loaded the **sample store data**! Try asking me about shipping, returns, or products.");
+      appendMessage("bot", "📦 I've loaded the **sample store data**!");
     }
   } catch (err) {
+    eventSource.close();
     showUploadStatus("error", "❌ Failed to load sample data.");
   }
 });
@@ -249,7 +278,17 @@ function setLoading(loading) {
 
 function showUploadStatus(type, message) {
   uploadStatus.className = `upload-status ${type}`;
-  uploadStatus.textContent = message;
+  
+  // Extract the percentage if it's there (e.g., "[45%]")
+  const pctMatch = message.match(/\[(\d+)%\]/);
+  const pct = pctMatch ? pctMatch[1] : (type === "success" ? 100 : 0);
+  
+  // Update text
+  uploadStatus.innerHTML = `<div>${message}</div>
+    <div style="width: 100%; height: 4px; background: rgba(0,0,0,0.1); margin-top: 5px; border-radius: 2px;">
+      <div style="width: ${pct}%; height: 100%; background: currentColor; transition: width 0.3s; border-radius: 2px;"></div>
+    </div>`;
+
   uploadStatus.classList.remove("hidden");
   if (type === "success") setTimeout(() => uploadStatus.classList.add("hidden"), 5000);
 }
