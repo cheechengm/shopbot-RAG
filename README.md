@@ -1,5 +1,7 @@
 # 🛍️ ShopBot — E-commerce RAG Chatbot
 
+**Problem Statement:** Customers often encounter obstacles—such as questions about refund policies or shipping times—outside of standard business hours. Without a human agent available, these users are left without guidance, resulting in a poor user experience. This AI Chatbot addresses this by providing a persistent, 24/7 knowledge expert that delivers instant, documentation-backed support.
+
 **ShopBot** is a Retrieval-Augmented Generation (RAG) platform that transforms static store documents into an interactive AI support agent. It enables store owners to upload policies and FAQs, providing customers with instant, accurate responses grounded strictly in the shop’s verified data.
 
 ---
@@ -40,7 +42,7 @@
 * **Real-Time Processing Progress:** A dynamic loading bar that provides instant feedback during document ingestion, showing the exact percentage of chunks processed and embedded.
 * **Smart Semantic Search:** Powered by MongoDB Atlas Vector Search and Ollama, the bot understands the meaning behind customer questions rather than just matching keywords.
 * **Persistent Memory:** Documentation remains securely stored in the cloud (MongoDB Atlas), meaning the bot is ready to answer questions 24/7 without needing to re-upload files after a restart.
-* **Clutter-Free Chat Management:** Users can reset their conversation at any time with a "Clear Chat" feature, instantly wiping the history to start a fresh session and maintain an organized interface.
+* **Clutter-Free Chat Session:** Users can reset their conversation at any time with a "Clear Chat" feature, instantly wiping the history to start a fresh session and maintain an organized interface.
 
 ## Image of the interface for admin dashboard
 <img width="2859" height="1452" alt="image" src="https://github.com/user-attachments/assets/8e721ff5-ffcf-4c65-b8a0-68eef47add36" />
