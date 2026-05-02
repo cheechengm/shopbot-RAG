@@ -54,13 +54,13 @@ The image demonstrates the ingestion of a Shopee Refund and Return Policy PDF. O
 ## ⚙️ How the Ingestion Pipeline Works
 The process converts static documents into "searchable brains" for the AI through several coordinated steps:
 
-*Document Parsing:* The system extracts raw text from PDF, DOCX, or TXT files, handling complex layouts like the Shopee policy you ingested.
+**Document Parsing:** The system extracts raw text from PDF, DOCX, or TXT files, handling complex layouts like the Shopee policy you ingested.
 
-*Recursive Chunking:* To stay within the AI's "context window," the text is broken into smaller, overlapping passages (chunks).
+**Recursive Chunking:** To stay within the AI's "context window," the text is broken into smaller, overlapping passages (chunks).
 
-*Vector Embedding:* Each chunk is sent to Ollama (Llama 3), which converts human language into a high-dimensional mathematical vector representing its meaning.
+**Vector Embedding:** Each chunk is sent to Ollama (Llama 3), which converts human language into a high-dimensional mathematical vector representing its meaning.
 
-*Persistent Storage:* These vectors are saved in MongoDB Atlas. Unlike a standard database, this allows for "nearest neighbor" searches, finding content based on intent rather than just keywords.
+**Persistent Storage:** These vectors are saved in MongoDB Atlas. Unlike a standard database, this allows for "nearest neighbor" searches, finding content based on intent rather than just keywords.
 
-*Live Feedback:* During this loop, the system sends real-time updates to the Admin Progress Bar, ensuring the user knows exactly how much data has been successfully vectorized.
+**Live Feedback:** During this loop, the system sends real-time updates to the Admin Progress Bar, ensuring the user knows exactly how much data has been successfully vectorized.
 
