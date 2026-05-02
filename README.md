@@ -51,7 +51,9 @@ The image demonstrates the ingestion of a Shopee Refund and Return Policy PDF. O
 
 
 ## Image of the customer interface 
-<img width="2859" height="1424" alt="image" src="https://github.com/user-attachments/assets/275a5df6-c1b0-4e12-94fe-072bf9e9cc5b" />
+<img width="2877" height="1461" alt="image" src="https://github.com/user-attachments/assets/80ec7d95-ee3e-490a-a38f-44107d816154" />
+The image above shows the client conversing with the ai chatbot regarding return policy.
+
 
 ## ⚙️ How the Ingestion Pipeline Works
 The process converts static documents into "searchable brains" for the AI through several coordinated steps:
