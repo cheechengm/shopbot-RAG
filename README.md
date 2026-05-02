@@ -51,7 +51,7 @@ The image demonstrates the ingestion of a Shopee Refund and Return Policy PDF. O
 ## Image of the customer interface 
 <img width="2859" height="1424" alt="image" src="https://github.com/user-attachments/assets/275a5df6-c1b0-4e12-94fe-072bf9e9cc5b" />
 
-⚙️ How the Ingestion Pipeline Works
+## ⚙️ How the Ingestion Pipeline Works
 The process converts static documents into "searchable brains" for the AI through several coordinated steps:
 
 Document Parsing: The system extracts raw text from PDF, DOCX, or TXT files, handling complex layouts like the Shopee policy you ingested.
