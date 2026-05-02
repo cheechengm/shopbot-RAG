@@ -40,6 +40,7 @@
 * **Real-Time Processing Progress:** A dynamic loading bar that provides instant feedback during document ingestion, showing the exact percentage of chunks processed and embedded.
 * **Smart Semantic Search:** Powered by MongoDB Atlas Vector Search and Ollama, the bot understands the meaning behind customer questions rather than just matching keywords.
 * **Persistent Memory:** Documentation remains securely stored in the cloud (MongoDB Atlas), meaning the bot is ready to answer questions 24/7 without needing to re-upload files after a restart.
+* **Clutter-Free Chat Management:** Users can reset their conversation at any time with a "Clear Chat" feature, instantly wiping the history to start a fresh session and maintain an organized interface.
 
 ## Image of the interface for admin dashboard
 <img width="2869" height="1474" alt="image" src="https://github.com/user-attachments/assets/35464491-c6f6-48c7-a02d-9d642bd9dc8c" />
